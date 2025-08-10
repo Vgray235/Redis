@@ -1,150 +1,140 @@
-// const express = require("express");
-// const cors = require("cors");
-// const mongoose = require("mongoose");
-// const validator = require("validator");
-// const dotenv = require("dotenv");
-
-// dotenv.config();
+// import express from "express";
+// import mongoose from "mongoose";
+// import session from "express-session";
+// import cors from "cors";
+// import { createClient } from 'redis';
+// import { RedisStore } from 'connect-redis';
 
 // const app = express();
-// const PORT = 3000;
 
-// // Middleware
-// app.use(cors());
-// app.use(express.json());
+// const redisClient = createClient();
+// redisClient.on('error', (err) => console.log('Redis Client Error', err));
+// await redisClient.connect();
 
-// // MongoDB connection
-// mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/employees", {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
-// const db = mongoose.connection;
-// db.on("error", console.error.bind(console, "MongoDB connection error:"));
-// db.once("open", () => console.log("✅ Connected to MongoDB"));
+// app.use(session({
+//   store: new RedisStore({ client: redisClient }),
+//   secret: 'keyboard cat',
+//   resave: false,
+//   saveUninitialized: false,
+//   cookie: { secure: false }
+// }));
+// // =======================
+// // 1. Setup Express
+// // =======================
+// // =======================
+// // 2. MongoDB Connection
+// // =======================
+// mongoose
+//   .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/mern_app")
+//   .then(() => console.log("✅ MongoDB connected"))
+//   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-// // Schema + Model
-// const employeeSchema = new mongoose.Schema(
-//   {
-//     name: {
-//       type: String,
-//       required: [true, "Name is required"],
+// // =======================
+// // 3. Redis Client & Store
+// // =======================
+// // const RedisStore = connectRedis(session);
+
+
+// // // Create Redis client (legacyMode needed for connect-redis v7)
+// // const redisClient = createClient({
+// //   legacyMode: true,
+// //   url: process.env.REDIS_URL || "redis://localhost:6379",
+// // });
+
+// redisClient.connect().catch(console.error);
+
+// redisClient.on("connect", () => console.log("✅ Redis connected"));
+// redisClient.on("error", (err) => console.error("❌ Redis error:", err));
+
+// // =======================
+// // 4. Session Middleware
+// // =======================
+// app.use(
+//   session({
+//     store: new RedisStore({ client: redisClient }),
+//     secret: process.env.SESSION_SECRET || "mysecret",
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//       secure: false, // true if HTTPS
+//       httpOnly: true,
+//       maxAge: 1000 * 60 * 10, // 10 minutes
 //     },
-//     email: {
-//       type: String,
-//       required: [true, "Email is required"],
-//       unique: true,
-//       validate: [validator.isEmail, "Invalid email format"],
-//     },
-//     department: {
-//       type: String,
-//       required: [true, "Department is required"],
-//     },
-//   },
-//   { timestamps: true }
+//   })
 // );
 
-// const Employee = mongoose.model("Employee", employeeSchema);
-
-// // Routes
-
-// // GET all employees
-// app.get("/api/employees", async (req, res) => {
-//   try {
-//     const employees = await Employee.find();
-//     res.json(employees);
-//   } catch (error) {
-//     res.status(500).json({ error: "Failed to fetch employees" });
-//   }
+// // =======================
+// // 5. Routes
+// // =======================
+// app.get("/", (req, res) => {
+//   res.send("Server is running ✅");
 // });
 
-// // GET one employee
-// app.get("/api/employees/:id", async (req, res) => {
-//   try {
-//     const employee = await Employee.findById(req.params.id);
-//     if (!employee) return res.status(404).json({ error: "Employee not found" });
-//     res.json(employee);
-//   } catch (error) {
-//     res.status(400).json({ error: "Invalid employee ID" });
-//   }
+// app.get("/set-session", (req, res) => {
+//   req.session.user = { name: "Vineet", role: "Admin" };
+//   res.send("Session set ✅");
 // });
 
-// // POST new employee
-// app.post("/api/employees", async (req, res) => {
-//   try {
-//     const newEmployee = new Employee(req.body);
-//     await newEmployee.save();
-//     res.status(201).json(newEmployee);
-//   } catch (error) {
-//     if (error.code === 11000) {
-//       res.status(400).json({ error: "Email already exists" });
-//     } else if (error.name === "ValidationError") {
-//       res.status(400).json({ error: Object.values(error.errors).map(e => e.message).join(", ") });
-//     } else {
-//       res.status(500).json({ error: "Failed to create employee" });
-//     }
-//   }
+// app.get("/get-session", (req, res) => {
+//   res.send(req.session.user || "No session found ❌");
 // });
 
-// // PUT update employee
-// app.put("/api/employees/:id", async (req, res) => {
-//   try {
-//     const updatedEmployee = await Employee.findByIdAndUpdate(req.params.id, req.body, {
-//       new: true,
-//       runValidators: true,
-//     });
-//     if (!updatedEmployee) return res.status(404).json({ error: "Employee not found" });
-//     res.json(updatedEmployee);
-//   } catch (error) {
-//     if (error.name === "ValidationError") {
-//       res.status(400).json({ error: Object.values(error.errors).map(e => e.message).join(", ") });
-//     } else {
-//       res.status(400).json({ error: "Invalid update or ID" });
-//     }
-//   }
-// });
-
-// // DELETE employee
-// app.delete("/api/employees/:id", async (req, res) => {
-//   try {
-//     const deletedEmployee = await Employee.findByIdAndDelete(req.params.id);
-//     if (!deletedEmployee) return res.status(404).json({ error: "Employee not found" });
-//     res.json(deletedEmployee);
-//   } catch (error) {
-//     res.status(400).json({ error: "Invalid employee ID" });
-//   }
-// });
-
-// app.listen(PORT, () => {
-//   console.log(`🚀 Server running at http://localhost:${PORT}`);
-// });
+// // =======================
+// // 6. Start Server
+// // =======================
+// const PORT = process.env.PORT || 5000;
+// app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
 
 
-const express = require("express");
-const cors = require("cors");
-const dotenv = require("dotenv");
-const connectDB = require("./config/db");
-const employeeRoutes = require("./routes/employeeRoutes");
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import connectDB from "./config/db.js";
+import { connectRedis, redisClient } from "./config/redisClient.js"; // exported earlier
+import sessionMiddleware from "./config/session.js";
+
+import authRoutes from "./routes/authRoutes.js";
+import employeeRoutes from "./routes/employeeRoutes.js";
+import analyticsRoutes from "./routes/analyticsRoutes.js";
+import { rateLimit } from "./middleware/rateLimit.js";
 
 dotenv.config();
-
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+// Connect DB + Redis
+await connectDB(process.env.MONGODB_URI);
+await connectRedis();
+
+// Expose redis client via app.locals for controllers
+app.locals.redis = redisClient;
+
+// Middleware
+app.use(cors({ origin: process.env.CORS_ORIGIN || "http://localhost:5173", credentials: true }));
 app.use(express.json());
+app.use(sessionMiddleware());
 
-// Connect to MongoDB
-connectDB();
+// Simple analytics counter for every request (non-blocking)
+app.use(async (req, res, next) => {
+  try { app.locals.redis && app.locals.redis.incr("analytics:requests:total"); } catch (e) { /* ignore */ }
+  next();
+});
+
+// Optional rate limiter applied globally
+app.use(rateLimit({ windowSec: 60, limit: 120 }));
 
 // Routes
+app.use("/api/auth", authRoutes);
 app.use("/api/employees", employeeRoutes);
+app.use("/api/analytics", analyticsRoutes);
 
-// Default route
-app.get("/", (req, res) => {
-  res.send("Employee API is running...");
-});
+// Serve static if frontend built into ../frontend/dist (optional)
+import path from "path";
+import fs from "fs";
+const dist = path.join(process.cwd(), "../frontend/dist");
+if (fs.existsSync(dist)) {
+  app.use(express.static(dist));
+  app.get("*", (req, res) => res.sendFile(path.join(dist, "index.html")));
+}
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
-});
+app.listen(PORT, () => console.log(`🚀 Backend running on http://localhost:${PORT}`));
