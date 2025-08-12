@@ -10,7 +10,7 @@ import { publisher } from "../workers/pubsub.js";
     await redisClient.expire(key, 60); // 1 minute window
   }
   
-  if (current > 5) {
+  if (current > 500) {
     // Send Pub/Sub alert to admins
     await publisher.publish("rate-limit-alerts", JSON.stringify({
       ip,

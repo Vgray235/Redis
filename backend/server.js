@@ -24,7 +24,7 @@ await connectRedis();
 app.locals.redis = redisClient;
 
 // Middleware
-app.use(cors({ origin: "https://redis-6acbde7e5-vasus-projects-8fbb98f5.vercel.app", credentials: true }));
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(express.json());
 app.use(sessionMiddleware());
 
@@ -38,8 +38,8 @@ app.use(async (req, res, next) => {
 
 // Routes
 app.use("/api/auth", authRoutes);
-// app.use("/api/employees", employeeRoutes);
-// app.use("/api/analytics", analyticsRoutes);
+app.use("/api/employees", employeeRoutes);
+app.use("/api/analytics", analyticsRoutes);
 
 // console.log("authRoutes:", authRoutes);
 // console.log("employeeRoutes:", employeeRoutes);

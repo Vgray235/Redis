@@ -7,8 +7,8 @@ import { register, login, logout, sessionCheck } from "../controllers/authContro
 // const router = express.Router();
 
 router.post("/register", register);
-// router.post("/login", login);
-// router.post("/logout", logout);
-// router.get("/session", sessionCheck);
+router.post("/login", login);
+router.post("/logout", logout);
+router.get("/session", sessionCheck);
 
 export default router;

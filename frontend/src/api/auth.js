@@ -1,4 +1,4 @@
-const API_URL = 'https://redis-m04j.onrender.com/api';
+const API_URL = 'http://localhost:5000/api';
 
 export async function registerUser(data) {
   const res = await fetch(`${API_URL}/register`, {
