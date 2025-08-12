@@ -1,33 +1,4 @@
-// import React, { useEffect, useState } from 'react';
 
-// const AnalyticsDashboard = () => {
-//   const [data, setData] = useState(null);
-
-//   useEffect(() => {
-//     fetch('http://localhost:5000/api/analytics')
-//       .then(res => res.json())
-//       .then(setData)
-//       .catch(err => console.error('Error fetching analytics', err));
-//   }, []);
-
-//   if (!data) return <p>Loading analytics...</p>;
-
-//   return (
-//     <div>
-//       <h2>📊 Analytics Dashboard</h2>
-//       <p>Total Requests: {data.totalRequests}</p>
-//       <p>Total Logins: {data.totalLogins}</p>
-//       <h3>Route Stats:</h3>
-//       <ul>
-//         {Object.entries(data.routes).map(([route, count]) => (
-//           <li key={route}>{route}: {count}</li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// };
-
-// export default AnalyticsDashboard;
 
 import React, { useEffect, useState } from "react";
 import { getAnalytics } from "./services/api";

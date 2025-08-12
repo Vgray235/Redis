@@ -14,6 +14,4 @@ export async function createEmployee(data) {
   return res.json();
 }
 
-// src/api/employees.js
 
-// Add other API functions like createEmployee, updateEmployee, deleteEmployee as needed
