@@ -3,11 +3,13 @@ import User from "../models/User.js";
 
 export async function register(req, res) {
   try {
+
     const { username, password } = req.body;
+    console.log(username+"  "+password);
     if (!username || !password) return res.status(400).json({ error: "Missing fields" });
     const existing = await User.findOne({ username });
     if (existing) return res.status(400).json({ error: "User exists" });
-
+  
     const user = new User({ username, password });
     await user.save();
     // create session

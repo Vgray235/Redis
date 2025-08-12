@@ -40,6 +40,7 @@ app.use(async (req, res, next) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/employees", employeeRoutes);
 app.use("/api/analytics", analyticsRoutes);
+console.log("reaching server");
 
 // console.log("authRoutes:", authRoutes);
 // console.log("employeeRoutes:", employeeRoutes);
