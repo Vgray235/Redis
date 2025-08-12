@@ -11,6 +11,7 @@ export async function register(req, res) {
     if (existing) return res.status(400).json({ error: "User exists" });
   
     const user = new User({ username, password });
+    
     await user.save();
     // create session
     req.session.user = { id: user._id, username: user.username };
