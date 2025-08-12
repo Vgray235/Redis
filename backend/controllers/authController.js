@@ -3,9 +3,8 @@ import User from "../models/User.js";
 
 export async function register(req, res) {
   try {
-
     const { username, password } = req.body;
-    const x=db.users.getIndexes()
+    const x=User.getIndexes()
 console.log("The DB data"+x)
     console.log(username+"  "+password);
     if (!username || !password) return res.status(400).json({ error: "Missing fields" });
