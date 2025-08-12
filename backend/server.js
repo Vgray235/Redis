@@ -4,8 +4,14 @@ const connectDB = require("./config/db");
 const analyticsTracker = require("./middleware/analyticsMiddleware");
 const rateLimiter = require("./middleware/rateLimit");
 const { protect } = require("./middleware/authMiddleware");
-
+const cors = require('cors');
 const app = express();
+app.use(cors({
+  origin: process.env.FRONTEND_URL || '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
 
 // DB + Middleware
 connectDB();
