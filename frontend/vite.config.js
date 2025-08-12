@@ -12,13 +12,18 @@ import path from 'path';
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: path.resolve(__dirname, '../backend/dist'),
-    emptyOutDir: true
-  },
+  outDir: 'dist',
+  emptyOutDir: true
+}
+,
   server: {
+
+    "rewrites": [
+    { "source": "/api/(.*)", "destination": "https://redis-m04j.onrender.com/api/$1" }
+  ],
     // during dev, proxy /api to backend dev server
     proxy: {
-      '/api': 'http://localhost:5000'
+      '/api': 'https://redis-m04j.onrender.com'
     }
   }
 });

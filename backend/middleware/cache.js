@@ -1,4 +1,4 @@
-// backend/middleware/cache.js
+
 // backend/middleware/cache.js
 import { redisClient } from "../config/redisClient.js";
 

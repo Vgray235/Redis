@@ -1,5 +1,5 @@
 export async function fetchEmployees() {
-  const res = await fetch('http://localhost:5000/api/employees');
+  const res = await fetch('https://redis-m04j.onrender.com/api/employees');
   if (!res.ok) throw new Error('Failed to fetch employees');
   return res.json();
 }

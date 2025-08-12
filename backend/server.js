@@ -10,7 +10,7 @@ import sessionMiddleware from "./config/session.js";
 import authRoutes from "./routes/authRoutes.js";
 import employeeRoutes from "./routes/employeeRoutes.js";
 import analyticsRoutes from "./routes/analyticsRoutes.js";
-import { rateLimit } from "./middleware/rateLimit.js";
+import {rateLimit} from "./middleware/rateLimit.js";
 
 dotenv.config();
 const app = express();
@@ -24,7 +24,7 @@ await connectRedis();
 app.locals.redis = redisClient;
 
 // Middleware
-app.use(cors({ origin: "https://redis-6acbde7e5-vasus-projects-8fbb98f5.vercel.app"|| "http://localhost:5173", credentials: true }));
+app.use(cors({ origin: "https://redis-6acbde7e5-vasus-projects-8fbb98f5.vercel.app", credentials: true }));
 app.use(express.json());
 app.use(sessionMiddleware());
 
@@ -35,12 +35,16 @@ app.use(async (req, res, next) => {
 });
 
 // Optional rate limiter applied globally
-app.use(rateLimit({ windowSec: 60, limit: 120 }));
 
 // Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/employees", employeeRoutes);
-app.use("/api/analytics", analyticsRoutes);
+// app.use("/api/employees", employeeRoutes);
+// app.use("/api/analytics", analyticsRoutes);
+
+// console.log("authRoutes:", authRoutes);
+// console.log("employeeRoutes:", employeeRoutes);
+// console.log("analyticsRoutes:", analyticsRoutes);
+
 
 // Serve static if frontend built into ../frontend/dist (optional)
 import path from "path";
