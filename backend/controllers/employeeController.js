@@ -52,12 +52,17 @@ exports.createEmployee = async (req, res) => {
     // Invalidate cache
     await redisClient.del("employees:list");
 
-    await publishNewEmployee({
-      message: `Welcome ${newEmployee.name} for joining! 🎉`,
-      name: newEmployee.name,
-      createdAt: newEmployee.createdAt
-    });
-
+    try {
+      await publishNewEmployee({
+        message: `Welcome ${newEmployee.name} for joining! 🎉`,
+        name: newEmployee.name,
+        id: newEmployee._id,
+        createdAt: newEmployee.createdAt
+      });
+    } catch (pubErr) {
+      console.error("Failed to publish new employee event:", pubErr);
+      // Don't fail the request if publishing fails
+    }
 
     res.status(201).json(newEmployee);
   } catch (err) {
