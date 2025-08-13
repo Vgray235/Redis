@@ -59,7 +59,7 @@ exports.loginUser = async (req, res) => {
       return res.status(400).json({ error: "All fields are required" });
     }
     console.log("email:-",email,password);
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email:email.trim() });
     console.log(user);
     if (!user) return res.status(400).json({ error: "Invalid credentials1" });
 
