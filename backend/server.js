@@ -7,7 +7,7 @@ const { protect } = require("./middleware/authMiddleware");
 const cors = require('cors');
 const app = express();
 app.use(cors({
-  origin: process.env.FRONTEND_URL || '*',
+  origin: "https://keen-marshmallow-8449ba.netlify.app"|| '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
