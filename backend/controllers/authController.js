@@ -58,11 +58,12 @@ exports.loginUser = async (req, res) => {
     if (!email || !password) {
       return res.status(400).json({ error: "All fields are required" });
     }
-
+    console.log("email:-",email,password);
     const user = await User.findOne({ email });
+    console.log(user);
     if (!user) return res.status(400).json({ error: "Invalid credentials1" });
 
-    console.log(user);
+    
 
     // Use model method to check password
     const isMatch = await user.matchPassword(password);
