@@ -60,11 +60,14 @@ exports.loginUser = async (req, res) => {
     }
 
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ error: "Invalid credentials" });
+    if (!user) return res.status(400).json({ error: "Invalid credentials1" });
+
+    console.log(user);
 
     // Use model method to check password
     const isMatch = await user.matchPassword(password);
-    if (!isMatch) return res.status(400).json({ error: "Invalid credentials" });
+    console.log(isMatch);
+    if (!isMatch) return res.status(400).json({ error: "Invalid credentials2" });
 
     const token = generateToken(user._id);
 
