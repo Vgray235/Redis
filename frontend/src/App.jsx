@@ -12,6 +12,7 @@ function App() {
   const { isAuthenticated } = useAuth();
 
   return (
+    
     <div className="app">
       <Navbar currentView={view} setCurrentView={setView} />
       {!isAuthenticated ? (
