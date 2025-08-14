@@ -140,3 +140,56 @@ const EmployeesView = () => {
 };
 
 export default EmployeesView;
+
+
+// // EmployeesView.jsx
+// import React from "react";
+// import { useToast } from "../../contexts/ToastContext";
+
+// const EmployeesView = () => {
+//   const { addToast } = useToast();
+
+//   const handleAddEmployee = async () => {
+//     try {
+//       // Simulated API call
+//       const res = { success: true, message: "Employee added successfully" };
+//       if (res.success) {
+//         addToast(res.message, "success");
+//       } else {
+//         addToast(res.message || "Failed to add employee", "error");
+//       }
+//     } catch (error) {
+//       addToast("❌ Something went wrong while adding employee", "error");
+//     }
+//   };
+
+//   const handleUpdateEmployee = async () => {
+//     try {
+//       // Simulated API call
+//       const res = { success: true, message: "Employee updated successfully" };
+//       if (res.success) {
+//         addToast(res.message, "success");
+//       } else {
+//         addToast(res.message || "Failed to update employee", "error");
+//       }
+//     } catch (error) {
+//       addToast("❌ Something went wrong while updating employee", "error");
+//     }
+//   };
+
+//   return (
+//     <div className="employees-view">
+//       <h2>Employees</h2>
+//       <div className="actions">
+//         <button className="btn-primary" onClick={handleAddEmployee}>
+//           Add Employee
+//         </button>
+//         <button className="btn-secondary" onClick={handleUpdateEmployee}>
+//           Update Employee
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default EmployeesView;

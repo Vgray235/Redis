@@ -17,7 +17,7 @@ const Navbar = ({ currentView, setCurrentView }) => {
 
   return (
     <header className="nav">
-      <div className="brand">EmployeeMgmt</div>
+      <div className="brand">Employee Management System</div>
       <nav className="nav-links">
         <button
           className={currentView === 'employees' ? 'active' : ''}
