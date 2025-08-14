@@ -43,7 +43,7 @@ const app = express();
 
 const allowedOrigins = [
   'http://localhost:3000', // local React dev server
-  'https://keen-marshmallow-8449ba.netlify.app' // production frontend
+  'https://heroic-meringue-257924.netlify.app/' // production frontend
 ];
 
 app.use(cors({
