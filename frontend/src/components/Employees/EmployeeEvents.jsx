@@ -10,7 +10,7 @@ export default function EmployeeEvent({ onNewEmployee }) {
   useEffect(() => {
     const connectSSE = () => {
       try {
-        const sseUrl = 'https://redis-m04j.onrender.com/api/pubsub/events';
+        const sseUrl = 'https://redis-1-qnld.onrender.com/api/pubsub/events';
         
         console.log('Connecting to SSE:', sseUrl);
         
